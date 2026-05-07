@@ -1,0 +1,10 @@
+# Core dependencies (sufficient for all non-LLM evaluators)
+pydantic>=2.7
+rapidfuzz>=3.9
+numpy>=1.26
+scipy>=1.13
+pandas>=2.2
+
+# Optional: required only for LLM-based evaluators
+# (SemanticConditions, VerifiedClaimsF1, CalibratedClaimJudge)
+# google-genai>=1.0

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hapticnet-eval"
+version = "0.2.0"
+description = "HapticNet evaluation harness: benchmark for structured scientific property extraction, citation quality, and grounding fidelity."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "pydantic>=2.7",
+  "rapidfuzz>=3.9",
+  "numpy>=1.26",
+  "scipy>=1.13",
+  "pandas>=2.2",
+]
+
+[project.optional-dependencies]
+llm = [
+  "google-genai>=1.0",
+]
+
+[project.scripts]
+hapticnet-eval = "hapticnet_eval.cli.main:main"
+
+[tool.setuptools.packages.find]
+include = ["hapticnet_eval*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

@@ -1,0 +1,71 @@
+{
+  "material_family": "Metals",
+  "material_class": "Copper",
+  "haptic_property": "Thermal conductivity (k)",
+  "value_condition_mapping": [
+    {
+      "material_subclass": "unspecified",
+      "measurement_conditions": [
+        {"label": "temperature", "val": "20°C"}
+      ],
+      "material_specifications": [
+        {"label": "purity", "val": "99.9%"}
+      ],
+      "object_class": ["bulk"],
+      "units": "W/(m·K)",
+      "value": {"value": 401},
+      "is_grounded": true,
+      "successful_groundings": [
+        {
+          "source_url": "https://en.wikipedia.org/wiki/Copper",
+          "source_uid": "c0752a5d5a82cc326d03b5b391949883",
+          "citation_snippet": "401 W/(m·K)",
+          "matched_snippet": "401 W/(m·K)",
+          "confidence": 0.95
+        }
+      ]
+    },
+    {
+      "material_subclass": "unspecified",
+      "measurement_conditions": [
+        {"label": "temperature", "val": "25°C"}
+      ],
+      "material_specifications": [],
+      "object_class": ["unspecified"],
+      "units": "W/(m·K)",
+      "value": {"value": 385},
+      "is_grounded": true,
+      "successful_groundings": [
+        {
+          "source_url": "https://www.engineeringtoolbox.com/thermal-conductivity-metals-d_858.html",
+          "source_uid": "abc123",
+          "citation_snippet": "Copper: 385 W/mK at 25 degrees Celsius",
+          "matched_snippet": "Copper: 385 W/mK",
+          "confidence": 0.88
+        }
+      ]
+    }
+  ],
+  "citations": [
+    {
+      "verbatim_snippet": "401 W/(m·K)",
+      "supports_fields": ["value"]
+    },
+    {
+      "verbatim_snippet": "Copper: 385 W/mK at 25 degrees Celsius",
+      "supports_fields": ["value", "conditions"]
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Copper",
+      "uid": "c0752a5d5a82cc326d03b5b391949883",
+      "title": "Copper - Wikipedia"
+    },
+    {
+      "url": "https://www.engineeringtoolbox.com/thermal-conductivity-metals-d_858.html",
+      "uid": "abc123",
+      "title": "Thermal Conductivity of Metals"
+    }
+  ]
+}
