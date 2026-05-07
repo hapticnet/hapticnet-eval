@@ -81,15 +81,39 @@ hapticnet-eval evaluate-manifest \
 ]
 ```
 
-## Evaluation Regimes
+## Evaluation Regimes & Weight Profiles
 
-The harness supports three retrieval regimes, each with a tailored weight profile:
+The harness supports three evaluation tracks. Each track uses a different **weight profile** when computing the aggregate score. The track determines which evaluators matter most, reflecting the information available to the system.
 
-| Regime | Description | Key weight |
-|--------|-------------|------------|
-| `closed_docs` | Agent used only pre-compiled evidence (no web access) | Factual accuracy (high) |
-| `url_only` | Agent was given source URLs but no document content | Grounding quality (high) |
-| `open_web` | Agent performed unrestricted web search | Novel claim verification (high) |
+| Track | CLI `--regime` | Weight profile | Primary signal | When to use |
+|-------|:---:|---|---|---|
+| **Closed-Docs** | `closed_docs` | `DEFAULT_WEIGHTS` | Factual accuracy (0.25) | System extracts from pre-supplied source texts |
+| **Guided Open-Web** | `open_web` | `OPEN_WEB_GUIDED_WEIGHTS` | Verified novel claim rate (0.40) | DR agent receives GT source URL hints |
+| **Unguided Open-Web** | `open_web` | `OPEN_WEB_UNGUIDED_WEIGHTS` | Verified novel claim rate (0.90) | DR agent searches freely, no hints |
+
+> **Note:** Both guided and unguided open-web tracks use `--regime open_web` on the CLI. The **weight profile** is what differentiates them — you select it programmatically when instantiating `BenchmarkRunner`. The CLI defaults to `DEFAULT_WEIGHTS` (closed-docs).
+
+### Selecting a weight profile (Python)
+
+```python
+from hapticnet_eval.benchmark import (
+    BenchmarkRunner,
+    DEFAULT_WEIGHTS,              # Closed-Docs
+    OPEN_WEB_GUIDED_WEIGHTS,      # Guided Open-Web
+    OPEN_WEB_UNGUIDED_WEIGHTS,    # Unguided Open-Web
+)
+
+# Closed-Docs (default)
+runner = BenchmarkRunner()
+
+# Guided Open-Web
+runner = BenchmarkRunner(weights=OPEN_WEB_GUIDED_WEIGHTS)
+
+# Unguided Open-Web
+runner = BenchmarkRunner(weights=OPEN_WEB_UNGUIDED_WEIGHTS)
+```
+
+> For derived / formula-based properties (e.g., thermal effusivity = √(k·ρ·c)), use `INDIRECT_WEIGHTS` instead of `DEFAULT_WEIGHTS`. See `benchmark.py` for details.
 
 ## Enabling LLM Evaluators (Optional)
 
@@ -144,6 +168,17 @@ When a key is present, the harness automatically activates:
 
 Same schema as the GT file. The harness canonicalizes both into comparable claim sets, then runs evaluators on the aligned pairs.
 
+## Documentation
+
+For full reference documentation, see the `documentation/` directory:
+
+| Document | Contents |
+|----------|----------|
+| [documentation/README.md](documentation/README.md) | Framework overview, architecture, canonical claims, claim matching |
+| [documentation/evaluators.md](documentation/evaluators.md) | All 25 evaluators with scoring formulas and academic citations |
+| [documentation/regimes.md](documentation/regimes.md) | Track definitions, weight profiles, and configuration guide |
+| [documentation/evaluator_observability_guide.md](documentation/evaluator_observability_guide.md) | Trace structures, LLM judge reasoning, resource tracking |
+
 ## Directory Structure
 
 ```
@@ -179,6 +214,11 @@ hapticnet_eval_release/
 │       ├── normalization.py  # Unit normalization
 │       ├── numeric.py        # Numeric comparison
 │       └── evidence.py       # Evidence utilities
+├── documentation/            # Full reference documentation
+│   ├── README.md             # Framework architecture
+│   ├── evaluators.md         # 25 evaluators reference
+│   ├── regimes.md            # Tracks & weight profiles
+│   └── evaluator_observability_guide.md
 └── examples/
     ├── gt_copper_thermal_conductivity.json   # Sample GT
     ├── pred_copper_thermal_conductivity.json # Sample prediction
@@ -194,3 +234,4 @@ hapticnet_eval_release/
 ## License
 
 See the main HapticNet repository for license terms.
+
